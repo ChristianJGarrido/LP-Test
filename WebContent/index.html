@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>LivePerson example page: Full</title>
+
+
+  <script type="text/javascript">
+    var lpTag = lpTag || {}; lpTag.vars = lpTag.vars  || []; lpTag.dbs = lpTag.dbs || [];
+    lpTag.section = 'default'; 
+	
+    var arrLPvars = [ 
+	
+        // 'unit' is required in most deployments
+        { scope:'page', name:'unit', value:'sales' },
+        // 'language' is required in deployments that do, or may in the future, need multi-lingual support
+        { scope:'session', name:'language', value:'english' }
+    ];
+    lpTag.vars.push(arrLPvars);
+	
+	//ajax function
+	//$.ajax() {
+		var sendVarsOnClick = function (x) {
+		// Push to queue
+			lpTag.vars.push([
+				{ scope:'page', name:'CheckoutStage', value:''+x }
+			]);
+     
+			try{
+				// Send waiting variables immediately
+				
+				lpTag.vars.send();
+				alert(''+x);
+			} catch(e) {alert(e);}
+		};
+	//}
+    // ======================= DYNAMIC BUTTONS ============================
+    // Define a default dynamic button on the page, specifying the following parameters
+    //   name: the name of the dynamic button in the LivePerson Admin Console
+    //   pid: the id of the div that the button will be injected into
+   	lpTag.dbs.push({ name:'chat-sales-english', pid:'lpchat' });
+  </script>
+
+
+</head>
+<body>
+  <!-- Include LivePerson tag file -->
+  <script type="text/javascript" src="le-mtagconfig.js"></script>
+
+
+  <!-- Button to demonstrate sending variables on click through a function -->
+  <button onclick="sendVarsOnClick(1); return false;">Step 1</button>
+  <button onclick="sendVarsOnClick(2); return false;">Step 2</button>
+  <!-- 
+    Div that will contain the chat button. 
+    Leave empty, and place in the correct place in your code. 
+    div id must match the pid in the button definition -->
+  <div id="lpchat"></div>
+  <div id="lpchat2"></div>
+</body>
+</html>
